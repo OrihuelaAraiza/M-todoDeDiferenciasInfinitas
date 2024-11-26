@@ -189,8 +189,6 @@ if __name__ == "__main__":
                     left_bc = BoundaryCondition(value=float(input(Fore.YELLOW + "Enter left boundary value: ")))
                 elif left_bc_type == 'derivative':
                     left_bc = BoundaryCondition(derivative=float(input(Fore.YELLOW + "Enter left boundary derivative: ")))
-                else:
-                    raise ValueError("Invalid boundary condition type. Please enter either 'value' or 'derivative'.")
 
                 right_bc_type = input(Fore.YELLOW + "Enter right boundary condition type (value/derivative): ").strip().lower()
                 if right_bc_type not in ['value', 'derivative']:
@@ -199,8 +197,18 @@ if __name__ == "__main__":
                     right_bc = BoundaryCondition(value=float(input(Fore.YELLOW + "Enter right boundary value: ")))
                 elif right_bc_type == 'derivative':
                     right_bc = BoundaryCondition(derivative=float(input(Fore.YELLOW + "Enter right boundary derivative: ")))
-                else:
-                    raise ValueError("Invalid boundary condition type.")
+
+                # Show equation in a simplified format for confirmation
+                equation_str = f"y''(x) = f(x)"
+                boundary_str = f"Boundary Conditions: y(a) = {left_bc.value if left_bc.value is not None else 'N/A'}, y'(a) = {left_bc.derivative if left_bc.derivative is not None else 'N/A'}, " \
+                                f"y(b) = {right_bc.value if right_bc.value is not None else 'N/A'}, y'(b) = {right_bc.derivative if right_bc.derivative is not None else 'N/A'}"
+                print(Fore.MAGENTA + f"\nEquation: {equation_str}")
+                print(Fore.MAGENTA + f"{boundary_str}")
+
+                confirm = input(Fore.YELLOW + "\nIs this correct? (yes/no): ").strip().lower()
+                if confirm != 'yes':
+                    print(Fore.RED + "Operation canceled by the user.")
+                    continue
 
                 solver = FiniteDifferenceSolver(custom_function, a, b, n, left_bc, right_bc)
                 solver.solve(verbose=True)
