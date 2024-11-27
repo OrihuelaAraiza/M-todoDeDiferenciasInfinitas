@@ -2,6 +2,7 @@ import time
 from fractions import Fraction
 from prettytable import PrettyTable
 from colorama import Fore, Style, init
+import matplotlib.pyplot as plt  # Importing matplotlib for plotting
 
 # Initialize colorama
 init(autoreset=True)
@@ -141,7 +142,24 @@ class FiniteDifferenceSolver:
                 table.add_row([Fore.YELLOW + x_str + Style.RESET_ALL, Fore.GREEN + y_str + Style.RESET_ALL])
             print(table)
 
+        # Plotting the results
+        self.plot_results(self.x_points, solution)
+
         return {"x": self.x_points, "y": solution}
+
+    def plot_results(self, x, y):
+        """
+        Plots the results using matplotlib.
+        :param x: List of x values.
+        :param y: List of y values.
+        """
+        plt.figure(figsize=(10, 6))
+        plt.plot(x, y, marker='o', linestyle='-', color='b')
+        plt.title('Finite Difference Solution')
+        plt.xlabel('x')
+        plt.ylabel('y')
+        plt.grid(True)
+        plt.show()
 
 
 # Test cases and example usage
